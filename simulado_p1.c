@@ -14,8 +14,10 @@ void completa(char vet[], char vet_base[], char vet_chave[]);
 
 void main(){
 	char vet_base[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ,. ";
-	char vet[] = "a.-b A_cD";
+	char vet[] = "Celacanto provoca maremoto";
 	char vet_chave[29];
+	char vet_frase[] = "CELACANTO PROVOCA MAREMOTO";
+
 	maiscula(vet);
 	escreve(vet);
 	elimina(vet);
@@ -48,10 +50,10 @@ void elimina(char vet[]){
 	vet[j] = '\0';
 
 	for(i=1;vet[i] != '\0';i++){
-		for(j=0;j<i-1 && !tem;j++)
+		for(j=0;!tem && j<i;j++)
 			if(vet[i]==vet[j]) tem = 1;
 		if(tem){
-			exclui(vet,i);
+			exclui(vet,i--);
 			tem = 0;
 		}
 	}	
