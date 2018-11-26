@@ -1,24 +1,27 @@
 /* 	Simulado da P1 de LabProg
 	itens feitos:
-	1)a)b)
+	1)a)b)c)
 	item em andamento:
-	1)c)
+	2)
 */
 #include <stdio.h>
-#include <string.h>
 
-void escreve(char vet[]);
+void escreve(char vetor[]);
 void maiscula(char vet[]);
 void elimina(char vet[]);
 void exclui(char vet[], int posicao);
+void completa(char vet[], char vet_base[], char vet_chave[]);
 
 void main(){
 	char vet_base[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ,. ";
 	char vet[] = "a.-b A_cD";
+	char vet_chave[29];
 	maiscula(vet);
 	escreve(vet);
 	elimina(vet);
 	escreve(vet);
+	completa(vet,vet_base,vet_chave);
+	escreve(vet_chave);
 }
 
 void escreve(char vet[]){
@@ -45,7 +48,7 @@ void elimina(char vet[]){
 	vet[j] = '\0';
 
 	for(i=1;vet[i] != '\0';i++){
-		for(j=0;j<i-1;j++)
+		for(j=0;j<i-1 && !tem;j++)
 			if(vet[i]==vet[j]) tem = 1;
 		if(tem){
 			exclui(vet,i);
@@ -59,4 +62,22 @@ void exclui(char vet[], int posicao){
 	for(i=posicao;vet[i]!='\0';i++){
 		vet[i] = vet[i+1];
 	}
+}
+
+void completa(char vet[], char vet_base[], char vet_chave[]){
+	int i,j,k=0;
+	int tem = 0;
+	for(i=0;vet[i]!='\0';i++)
+		vet_chave[i] = vet[i];
+	k=i;
+	
+	for(i=0;vet_base[i] != '\0';i++){
+		for(j=0;vet[j] != '\0' && !tem;j++)
+			if(vet_base[i]==vet[j]) tem = 1;
+		if(!tem){
+			vet_chave[k++] = vet_base[i];
+		}
+		tem = 0;
+	}
+	vet_chave[k] = '\0';
 }
