@@ -1,8 +1,9 @@
 /* 	Simulado da P1 de LabProg
 	itens feitos:
 	1)a)b)c)
-	item em andamento:
 	2)
+	item em andamento:
+	3)
 */
 #include <stdio.h>
 
@@ -11,19 +12,30 @@ void maiscula(char vet[]);
 void elimina(char vet[]);
 void exclui(char vet[], int posicao);
 void completa(char vet[], char vet_base[], char vet_chave[]);
+void criptografa(char vet_base[], char vet_chave[], char vet_frase[]);
+int pega_indice(char vet_base[], int c);
 
 void main(){
-	char vet_base[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ,. ";
+	char *vet_base = "ABCDEFGHIJKLMNOPQRSTUVWXYZ,. ";
 	char vet[] = "Celacanto provoca maremoto";
 	char vet_chave[29];
 	char vet_frase[] = "CELACANTO PROVOCA MAREMOTO";
 
+	printf("\n-------- Frase para chave: --------\n");
+	escreve(vet);
+	printf("\n---- Frase para criptografar: ----\n");
+	escreve(vet_frase);
+
 	maiscula(vet);
-	escreve(vet);
 	elimina(vet);
-	escreve(vet);
 	completa(vet,vet_base,vet_chave);
+
+	printf("\n------------- CHAVE: -------------\n");
 	escreve(vet_chave);
+
+	printf("\n------ Frase criptografada: ------\n");
+	criptografa(vet_base,vet_chave,vet_frase);
+	escreve(vet_frase);
 }
 
 void escreve(char vet[]){
@@ -82,4 +94,20 @@ void completa(char vet[], char vet_base[], char vet_chave[]){
 		tem = 0;
 	}
 	vet_chave[k] = '\0';
+}
+
+void criptografa(char vet_base[], char vet_chave[], char vet_frase[]){
+	int i,j=0; //i para a frase e j para a chave (indices)
+	
+	for(i=0;vet_frase[i]!='\0';i++){
+		j = (j+pega_indice(vet_base,vet_frase[i])+1)%29;
+		vet_frase[i] = vet_chave[j];
+	}
+}
+
+int pega_indice(char vet_base[], int c){
+	int i;
+	for(i=0;vet_base[i] != '\0';i++){
+		if(vet_base[i] == c) return i;
+	}
 }
