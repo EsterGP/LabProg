@@ -85,7 +85,7 @@ void elimina_extras(char vet[]){
 			|| vet[i]=='.' || vet[i]==',' || vet[i]==' ')
 			vet[j++] = vet[i];
 
-	vet[j] = '\0';
+	vet[--j] = '\0';
 }
 
 void exclui(char vet[], int posicao){
