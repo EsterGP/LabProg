@@ -24,14 +24,14 @@ void main(){
 	maiscula(vet);
 	elimina(vet);
 	completa(vet,vet_base,vet_chave);
-	escreve(vet_chave);
+//	escreve(vet_chave);
 	
 	//pegando a frase para criptografar
 	printf("\n---- Entre com a frase para criptografar (MAX 50 caracteres): ----\n");
 	lefrase(vet_frase,N);
 	maiscula(vet_frase);
 	elimina_extras(vet_frase);
-	escreve(vet_frase);
+//	escreve(vet_frase);
 
 	printf("\n------------- CHAVE: -------------\n");
 	escreve(vet_chave);
