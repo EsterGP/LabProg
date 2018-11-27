@@ -1,34 +1,37 @@
-/* 	Simulado da P1 de LabProg
-	itens feitos:
-	1)a)b)c)
-	2)
-	item em andamento:
-	3)
-*/
+/* 	Simulado da P1 de LabProg	*/
 #include <stdio.h>
 
 void escreve(char vetor[]);
+void lefrase(char vet[], int lim);
 void maiscula(char vet[]);
 void elimina(char vet[]);
+void elimina_extras(char vet[]);
 void exclui(char vet[], int posicao);
 void completa(char vet[], char vet_base[], char vet_chave[]);
 void criptografa(char vet_base[], char vet_chave[], char vet_frase[]);
 int pega_indice(char vet_base[], int c);
 
 void main(){
+	int N = 50;
 	char *vet_base = "ABCDEFGHIJKLMNOPQRSTUVWXYZ,. ";
-	char vet[] = "Celacanto provoca maremoto";
+	char vet[N];
 	char vet_chave[29];
-	char vet_frase[] = "CELACANTO PROVOCA MAREMOTO";
+	char vet_frase[N];
 
-	printf("\n-------- Frase para chave: --------\n");
-	escreve(vet);
-	printf("\n---- Frase para criptografar: ----\n");
-	escreve(vet_frase);
-
+	//pegando a frase para chave
+	printf("\n---- Entre com a frase para chave (MAX 50 caracteres): ----\n");
+	lefrase(vet,N);
 	maiscula(vet);
 	elimina(vet);
 	completa(vet,vet_base,vet_chave);
+	escreve(vet_chave);
+	
+	//pegando a frase para criptografar
+	printf("\n---- Entre com a frase para criptografar (MAX 50 caracteres): ----\n");
+	lefrase(vet_frase,N);
+	maiscula(vet_frase);
+	elimina_extras(vet_frase);
+	escreve(vet_frase);
 
 	printf("\n------------- CHAVE: -------------\n");
 	escreve(vet_chave);
@@ -36,6 +39,14 @@ void main(){
 	printf("\n------ Frase criptografada: ------\n");
 	criptografa(vet_base,vet_chave,vet_frase);
 	escreve(vet_frase);
+}
+
+void lefrase(char vet[], int lim){
+	int c, i;
+
+	for(i=0; i<lim-1&&(c=getchar())!=EOF && c!='\n'; ++i){
+		vet[i] = c;
+	}
 }
 
 void escreve(char vet[]){
@@ -52,14 +63,9 @@ void maiscula(char vet[]){
 }
 
 void elimina(char vet[]){
-	int i,j,k;
+	int i,j;
 	int tem = 0;
-	for(i=j=0;vet[i]!='\0';i++)
-		if((vet[i]>='A' && vet[i]<='Z')
-			|| vet[i]=='.' || vet[i]==',' || vet[i]==' ')
-			vet[j++] = vet[i];
-
-	vet[j] = '\0';
+	elimina_extras(vet);
 
 	for(i=1;vet[i] != '\0';i++){
 		for(j=0;!tem && j<i;j++)
@@ -69,6 +75,17 @@ void elimina(char vet[]){
 			tem = 0;
 		}
 	}	
+}
+
+void elimina_extras(char vet[]){
+	int i,j;
+	int tem = 0;
+	for(i=j=0;vet[i]!='\0';i++)
+		if((vet[i]>='A' && vet[i]<='Z')
+			|| vet[i]=='.' || vet[i]==',' || vet[i]==' ')
+			vet[j++] = vet[i];
+
+	vet[j] = '\0';
 }
 
 void exclui(char vet[], int posicao){
@@ -107,7 +124,6 @@ void criptografa(char vet_base[], char vet_chave[], char vet_frase[]){
 
 int pega_indice(char vet_base[], int c){
 	int i;
-	for(i=0;vet_base[i] != '\0';i++){
+	for(i=0;vet_base[i] != '\0';i++)
 		if(vet_base[i] == c) return i;
-	}
 }
