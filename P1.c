@@ -1,6 +1,6 @@
 #include <stdio.h>
-#define AVANCA 1
-#define RECUA 0
+//#define AVANCA 1
+//#define RECUA 0
 
 void leTexto(char vetor[], int max);
 void escreve(char vetor[]);
@@ -9,7 +9,7 @@ void maiuscula(char textoIn[], int sentido, int i, int num);
 void minuscula(char textoIn[], int sentido, int i, int num);
 
 int main(){
-	int max = 3000;
+//	int max = 3000;
 	char textoIn[] = "Celacanto provoca maremoto? Sim.";
 	int vet_num[12] = {1,9,9,1,1,2,3,4,0,5,6,7}; //porque a matricula tem 12 dígitos
 	escreve(textoIn);
@@ -56,54 +56,74 @@ void escreve(char vetor[]){
 }
 
 void criptografa(char textoIn[], int vet_num[]){
-	int i;
-	int sentido = AVANCA;
-	for(i=0;textoIn[i]!='\0';i++){
-		//saber o sentido que vai andar
-		if(textoIn[i] == ' ' && sentido == AVANCA)
-			sentido = RECUA;
-		else if(textoIn[i] == ' ' && sentido == RECUA)
-			sentido  = AVANCA;
+	int i, c;
+//	int avanca = 1;
+	int sentido = 1;
+	
+	for(i=0; textoIn[i] != '\0';i++){
+		c = textoIn[i];
 		
 		//andar
-		if(textoIn[i]>= 'a' && textoIn[i]<='z')
+		if( textoIn[i] == ' ' || (textoIn[i] >= 'a' && textoIn[i] <='z'))
 			minuscula(textoIn, sentido, i, vet_num[(i%12)]);
-		else if(textoIn[i]>= 'A' && textoIn[i]<='Z')
+		else if(textoIn[i] >= 'A' && textoIn[i] <='Z')
 			maiuscula(textoIn, sentido, i, vet_num[(i%12)]);
 			
+		//saber o sentido que o proximo vai andar
+		
+		if (c == ' '){
+			if(sentido == 1) sentido = 0;
+			if(sentido == 0) sentido  = 1;
+		}
+/*
+		if(c == ' ' && sentido == AVANCA){
+			sentido = RECUA;
+			printf("%c\t %d\n", textoIn[i], sentido);
+		}
+		else if(c == ' ' && sentido == RECUA){
+			sentido  = AVANCA;
+			printf("%c\t %d\n", textoIn[i], sentido);
+		}
+*/
 	}
 }
 
-//maiuscula receberá o vetor,
-//pra onde ela andará e o indice da letra
-void maiuscula(char textoIn[], int sentido, int i, int num){
-	char base[] = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+//minuscula receberá o vetor, pra onde ela andará,
+//o indice da letra e o numero de casas q andará
+void minuscula(char textoIn[], int sentido, int i, int num){
+	char base[] = " abcdefghijklmnopqrstuvwxyz";
+	int avanca = 1;
 	int k;
+	
+	printf("%c\t", textoIn[i]);
 	
 	for(k=0;base[k] != '\0' && base[k] != textoIn[i];k++)
 		;
-	
+		
 	if(base[k] != '\0'){
-		if(sentido == AVANCA)
+		if(sentido == avanca){
 			textoIn[i] = base[(k+num)%27];
-		else if(sentido == RECUA)
+		}
+		else if(sentido == !avanca)
 			textoIn[i] = base[(k-num)%27];
 	}
 }
 
-//minuscula receberá o vetor,
-//pra onde ela andará e o indice da letra
-void minuscula(char textoIn[], int sentido, int i, int num){
-	char base[] = " abcdefghijklmnopqrstuvwxyz";
+
+//maiuscula receberá o vetor, pra onde ela andará,
+//o indice da letra e o numero de casas q andará
+void maiuscula(char textoIn[], int sentido, int i, int num){
+	char base[] = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	int avanca = 1;
 	int k;
 	
 	for(k=0;base[k] != '\0' && base[k] != textoIn[i];k++)
 		;
-		
+	
 	if(base[k] != '\0'){
-		if(sentido == AVANCA)
+		if(sentido == avanca)
 			textoIn[i] = base[(k+num)%27];
-		else if(sentido == RECUA)
+		else if(sentido == !avanca)
 			textoIn[i] = base[(k-num)%27];
 	}
 }
