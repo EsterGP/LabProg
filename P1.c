@@ -1,20 +1,28 @@
+//falta converter a matricula de char para inteiro
 #include <stdio.h>
-//#define AVANCA 1
-//#define RECUA 0
+#include <stdlib.h>
+#define AVANCA 1
+#define RECUA 0
 
 void leTexto(char vetor[], int max);
+void leMatricula(char vet_num[]);
+//int convert (char s []);
 void escreve(char vetor[]);
 void criptografa(char vetor[], int vet_num[]);
 void maiuscula(char textoIn[], int sentido, int i, int num);
 void minuscula(char textoIn[], int sentido, int i, int num);
 
 int main(){
-//	int max = 3000;
-	char textoIn[] = "Celacanto provoca maremoto? Sim.";
+	const int max = 3000;
+//	char textoIn[] = "Celacanto provoca maremoto? Sim.";
+	char textoIn[max];
 	int vet_num[12] = {1,9,9,1,1,2,3,4,0,5,6,7}; //porque a matricula tem 12 dígitos
-	escreve(textoIn);
+//	char vet_num[12];
 	
-//	leTexto(textoIn, max);
+//	escreve(textoIn);
+	
+	leTexto(textoIn, max);
+//	leMatricula(vet_num);
 	criptografa(textoIn, vet_num);
 	escreve(textoIn);
 	
@@ -46,6 +54,27 @@ void leTexto(char textoIn[], int max){
 	textoIn[k] = '\0';
 }
 
+/*
+void leMatricula(char vet_num[]){
+	int lim = 12;
+	int i,c;
+	printf("Digite sua matricula de 12 digitos: ");
+	
+	for(i=0; i<lim-1&&(c=getchar())!=EOF && c!='\n'; ++i){
+		vet_num[i] = convert(c);
+	}
+}
+
+int convert(char s []){
+	int i, dec;
+
+	dec = 0;
+	for (i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
+		dec = 10*dec + (s[i] - '0');
+	return dec;
+}
+*/
+
 void escreve(char vetor[]){
 	int i, max = 80;
 	for(i=0;vetor[i]!='\0';i++){
@@ -60,8 +89,8 @@ void criptografa(char textoIn[], int vet_num[]){
 //	int avanca = 1;
 	int sentido = 1;
 	
-	for(i=0; textoIn[i] != '\0';i++){
-		c = textoIn[i];
+	for(i=0; (c = textoIn[i]) != '\0';i++){
+//		c = textoIn[i];
 		
 		//andar
 		if( textoIn[i] == ' ' || (textoIn[i] >= 'a' && textoIn[i] <='z'))
@@ -72,19 +101,9 @@ void criptografa(char textoIn[], int vet_num[]){
 		//saber o sentido que o proximo vai andar
 		
 		if (c == ' '){
-			if(sentido == 1) sentido = 0;
-			if(sentido == 0) sentido  = 1;
+			if(sentido == AVANCA) sentido = RECUA;
+			else if(sentido == RECUA) sentido  = AVANCA;
 		}
-/*
-		if(c == ' ' && sentido == AVANCA){
-			sentido = RECUA;
-			printf("%c\t %d\n", textoIn[i], sentido);
-		}
-		else if(c == ' ' && sentido == RECUA){
-			sentido  = AVANCA;
-			printf("%c\t %d\n", textoIn[i], sentido);
-		}
-*/
 	}
 }
 
@@ -92,20 +111,17 @@ void criptografa(char textoIn[], int vet_num[]){
 //o indice da letra e o numero de casas q andará
 void minuscula(char textoIn[], int sentido, int i, int num){
 	char base[] = " abcdefghijklmnopqrstuvwxyz";
-	int avanca = 1;
 	int k;
-	
-	printf("%c\t", textoIn[i]);
-	
 	for(k=0;base[k] != '\0' && base[k] != textoIn[i];k++)
 		;
 		
 	if(base[k] != '\0'){
-		if(sentido == avanca){
+		if(sentido == AVANCA){
 			textoIn[i] = base[(k+num)%27];
 		}
-		else if(sentido == !avanca)
-			textoIn[i] = base[(k-num)%27];
+		else if(sentido == RECUA)
+			if(k-num < 0) textoIn[i] = base[(27+k-num)%27];
+			else	textoIn[i] = base[(k-num)%27];
 	}
 }
 
@@ -114,16 +130,16 @@ void minuscula(char textoIn[], int sentido, int i, int num){
 //o indice da letra e o numero de casas q andará
 void maiuscula(char textoIn[], int sentido, int i, int num){
 	char base[] = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	int avanca = 1;
 	int k;
 	
 	for(k=0;base[k] != '\0' && base[k] != textoIn[i];k++)
 		;
 	
 	if(base[k] != '\0'){
-		if(sentido == avanca)
+		if(sentido == AVANCA)
 			textoIn[i] = base[(k+num)%27];
-		else if(sentido == !avanca)
-			textoIn[i] = base[(k-num)%27];
+		else if(sentido == RECUA)
+			if(k-num < 0) textoIn[i] = base[(27+k-num)%27];
+			else	textoIn[i] = base[(k-num)%27];
 	}
 }
