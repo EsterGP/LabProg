@@ -5,20 +5,18 @@
 void leTexto(char vetor[], int max);
 void escreve(char vetor[]);
 void criptografa(char vetor[], int vet_num[]);
-int Idxmaiuscula(int c);
-int Idxminuscula(int c);
-void avancar();
-void recuar();
+void maiuscula(char textoIn[], int sentido, int i, int num);
+void minuscula(char textoIn[], int sentido, int i, int num);
 
 int main(){
 	int max = 3000;
 	char textoIn[] = "Celacanto provoca maremoto? Sim.";
-//	char textoOut[];
 	int vet_num[12] = {1,9,9,1,1,2,3,4,0,5,6,7}; //porque a matricula tem 12 dígitos
 	escreve(textoIn);
 	
 //	leTexto(textoIn, max);
 	criptografa(textoIn, vet_num);
+	escreve(textoIn);
 	
 	return 0;
 }
@@ -51,7 +49,7 @@ void leTexto(char textoIn[], int max){
 void escreve(char vetor[]){
 	int i, max = 80;
 	for(i=0;vetor[i]!='\0';i++){
-//		if((i+1)%max == 0) printf("\n");
+		if((i+1)%max == 0) printf("\n");
 		printf("%c",vetor[i]);
 	}
 	printf("\n");
@@ -59,44 +57,53 @@ void escreve(char vetor[]){
 
 void criptografa(char textoIn[], int vet_num[]){
 	int i;
-	int idx = 0;
-	int j = 0;
 	int sentido = AVANCA;
 	for(i=0;textoIn[i]!='\0';i++){
 		//saber o sentido que vai andar
-		if(textoIn[i] = ' ' && sentido == AVANCA)
+		if(textoIn[i] == ' ' && sentido == AVANCA)
 			sentido = RECUA;
-		else if(textoIn[i] = ' ' && sentido == RECUA)
+		else if(textoIn[i] == ' ' && sentido == RECUA)
 			sentido  = AVANCA;
 		
-		//descobrir quanto vai andar
+		//andar
 		if(textoIn[i]>= 'a' && textoIn[i]<='z')
-			idx = Idxminuscula(textoIn[i]);
+			minuscula(textoIn, sentido, i, vet_num[(i%12)]);
 		else if(textoIn[i]>= 'A' && textoIn[i]<='Z')
-			idx = Idxmaiuscula(textoIn[i]);
+			maiuscula(textoIn, sentido, i, vet_num[(i%12)]);
 			
-		//trocar a letra
-		if(sentido == AVANCA)
-			j = (j+idx)%27;
-		else if(sentido == RECUA)
-			j = (j-idx)%27;
 	}
 }
 
-int Idxmaiuscula(int c){
+//maiuscula receberá o vetor,
+//pra onde ela andará e o indice da letra
+void maiuscula(char textoIn[], int sentido, int i, int num){
 	char base[] = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	int k;
 	
-	return 0;
+	for(k=0;base[k] != '\0' && base[k] != textoIn[i];k++)
+		;
+	
+	if(base[k] != '\0'){
+		if(sentido == AVANCA)
+			textoIn[i] = base[(k+num)%27];
+		else if(sentido == RECUA)
+			textoIn[i] = base[(k-num)%27];
+	}
 }
 
-int Idxminuscula(int c){
+//minuscula receberá o vetor,
+//pra onde ela andará e o indice da letra
+void minuscula(char textoIn[], int sentido, int i, int num){
 	char base[] = " abcdefghijklmnopqrstuvwxyz";
+	int k;
 	
-	return 0;
-}
-
-void avancar(){
-}
-
-void recuar(){
+	for(k=0;base[k] != '\0' && base[k] != textoIn[i];k++)
+		;
+		
+	if(base[k] != '\0'){
+		if(sentido == AVANCA)
+			textoIn[i] = base[(k+num)%27];
+		else if(sentido == RECUA)
+			textoIn[i] = base[(k-num)%27];
+	}
 }
