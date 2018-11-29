@@ -13,10 +13,11 @@ int main(){
 	const int max = 3000;
 	char textoIn[max];
 	char vet_num[12];
-	
+	printf("Digite a Mensagem: \n");
 	leTexto(textoIn, max);
 	leMatricula(vet_num);
 	criptografa(textoIn, vet_num);
+	printf("Mensagem Criptografada: \n");
 	escreve(textoIn);
 	
 	return 0;
@@ -71,12 +72,9 @@ void escreve(char vetor[]){
 
 void criptografa(char textoIn[], char vet_num[]){
 	int i, c;
-//	int avanca = 1;
 	int sentido = 1;
 	
 	for(i=0; (c = textoIn[i]) != '\0';i++){
-//		c = textoIn[i];
-		
 		//andar
 		if( textoIn[i] == ' ' || (textoIn[i] >= 'a' && textoIn[i] <='z'))
 			minuscula(textoIn, sentido, i, vet_num[(i%12)]);
@@ -84,7 +82,6 @@ void criptografa(char textoIn[], char vet_num[]){
 			maiuscula(textoIn, sentido, i, vet_num[(i%12)]);
 			
 		//saber o sentido que o proximo vai andar
-		
 		if (c == ' '){
 			if(sentido == AVANCA) sentido = RECUA;
 			else if(sentido == RECUA) sentido  = AVANCA;
