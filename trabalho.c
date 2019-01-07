@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int escreve_cubo(int valores[]);
 void trocalinha(int valores[], int n);
@@ -138,6 +139,8 @@ void resolve(int valores[]){
 void aleatorio(int valores[], int n){
 	printf("Cria entrada aleatória!\n");
 	int i, j, temp, tem = 0;
+	
+	srand( (unsigned)time(NULL) );
 	
 	for(i=0;i<n;i++){
 		temp = rand()%9;
