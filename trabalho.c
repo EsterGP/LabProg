@@ -6,7 +6,7 @@ int escreve_cubo(int valores[]);
 void trocalinha(int valores[], int n);
 void direita(int valores[], int n);
 void girahorario(int valores[], int n);
-void resolve(int valores[]);
+void resolve(int valores[], int n);
 void aleatorio(int valores[], int n);
 int fimdejogo(int valores[], int n);
 
@@ -15,10 +15,9 @@ int main(int argc, char *argv[]){
 	int tamanho_entrada = 8;
 	int entrada[tamanho_entrada];
 	int op, c;
-	int fim_jogo = 0; //pra saber se o jogo terminou
-//	int caminho[tamanho_entrada];
 	int i=0, tem_arg = 0;
 
+	//pega os argumentos da linha de comando
 	while (--argc > 0 && (*++argv)[0] == '-'){
 		while ((c = *++argv[0])){
 			switch (c) {
@@ -27,8 +26,7 @@ int main(int argc, char *argv[]){
 				tem_arg = 1;
 				break;
 			case 'a':
-				resolve(entrada);
-				tem_arg = 1;
+				resolve(entrada, tamanho_entrada);
 				break;
 			default:
 				printf("Paramêtro de entrada inválido: %c\n", c);
@@ -37,7 +35,8 @@ int main(int argc, char *argv[]){
 			}
 		}
 	}
-
+	
+	//ler arquivo
 	if(!tem_arg){
 		FILE *arq = fopen( "arquivo.txt" , "r" ); 
 	
@@ -46,14 +45,12 @@ int main(int argc, char *argv[]){
 				entrada[i++] = c -'0';
 		}
 	}
-		
-	escreve_cubo(entrada);
 	
-	fim_jogo = fimdejogo(entrada,tamanho_entrada);
-
-	printf("Escolha uma opção:\nA: trocar de linha\nB: girar para a direita\nC: girar os 4 elementos centrais no sentido horario\nZ: Resolver automaticamente\nQ: Sair\n");
-
-	while(!fim_jogo && (op=getchar())){
+	do{
+		system("clear");
+		escreve_cubo(entrada);
+		printf("Escolha uma opção:\nA: trocar de linha\nB: girar para a direita\nC: girar os 4 elementos centrais no sentido horario\nZ: Resolver automaticamente\nQ: Sair\n");
+		op=getchar();
 		switch(op){
 			case 'A': case 'a':
 				trocalinha(entrada, tamanho_entrada);
@@ -65,19 +62,18 @@ int main(int argc, char *argv[]){
 				girahorario(entrada, tamanho_entrada);
 				break;
 			case 'Z': case 'z':
-				resolve(entrada);
+				resolve(entrada, tamanho_entrada);
 				break;
 			case 'Q': case 'q':
 				exit(0);
 				break;
-			default: printf("Digite um comando válido!\n"); break;
+			default:
+				printf("Digite um comando válido!\n");
+				break;
 		}
-		system("clear");
-		escreve_cubo(entrada);
-		printf("Escolha uma opção:\nA: trocar de linha\nB: girar para a direita\nC: girar os 4 elementos centrais no sentido horario\nZ: Resolver automaticamente\nQ: Sair\n");
-	}
+	}while(!fimdejogo(entrada,tamanho_entrada));
 	
-	printf("\nParabéns!\n");
+	printf("\nVocê conseguiu, parabéns! :)\n");
 	return 0;
 }
 
@@ -137,8 +133,8 @@ void girahorario(int valores[], int n){
 	valores[6] = temp[2];	
 }
 
-void resolve(int valores[]){
-	printf("Deveria resolver o jogo! :)\n");
+void resolve(int valores[], int n){
+	printf("Deveria resolver o Quadro! :)\n");
 }
 
 void aleatorio(int valores[], int n){
