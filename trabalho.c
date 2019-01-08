@@ -10,45 +10,48 @@ void resolve(int valores[]);
 void aleatorio(int valores[], int n);
 int fimdejogo(int valores[], int n);
 
+
 int main(int argc, char *argv[]){
 	int tamanho_entrada = 8;
 	int entrada[tamanho_entrada];
 	int op, c;
 	int fim_jogo = 0; //pra saber se o jogo terminou
-	int caminho[tamanho_entrada];
-//	int i=0, c;
-/*
-	FILE *arq = fopen( "arquivo.txt" , "r" ); 
-	
-	while( (c = fgetc(arq)) != EOF){
-		if(c != ' ')
-			entrada[i++] = c;
+//	int caminho[tamanho_entrada];
+	int i=0, tem_arg = 0;
+
+	while (--argc > 0 && (*++argv)[0] == '-'){
+		while ((c = *++argv[0])){
+			switch (c) {
+			case 'r':
+				aleatorio(entrada, tamanho_entrada);
+				tem_arg = 1;
+				break;
+			case 'a':
+				resolve(entrada);
+				tem_arg = 1;
+				break;
+			default:
+				printf("Paramêtro de entrada inválido: %c\n", c);
+				argc = 0;
+				break;
+			}
+		}
 	}
+
+	if(!tem_arg){
+		FILE *arq = fopen( "arquivo.txt" , "r" ); 
 	
-	printf("%s", entrada);
-*/
-
-	while (--argc > 0 && (*++argv)[0] == '-')
-           while ((c = *++argv[0]))
-               switch (c) {
-               case 'r':
-                   aleatorio(entrada, tamanho_entrada);
-                   break;
-               case 'a':
-                   resolve(entrada);
-                   break;
-               default:
-                   printf("acha: opção ilegal %c\n", c);
-                   argc = 0;
-                   break;
-               }
-
+		while( (c = fgetc(arq)) != EOF){
+			if(c != ' ')
+				entrada[i++] = c -'0';
+		}
+	}
+		
 	escreve_cubo(entrada);
 	
 	fim_jogo = fimdejogo(entrada,tamanho_entrada);
-	printf("\n%d\n", fim_jogo);
 
-	printf("Escolha uma opção:\nA: trocar de linha\nB: girar para a direita\nC: girar os 4 elementos centrais no sentido horario\nQ: Sair\n");
+	printf("Escolha uma opção:\nA: trocar de linha\nB: girar para a direita\nC: girar os 4 elementos centrais no sentido horario\nZ: Resolver automaticamente\nQ: Sair\n");
 
 	while(!fim_jogo && (op=getchar())){
 		switch(op){
@@ -71,8 +74,10 @@ int main(int argc, char *argv[]){
 		}
 		system("clear");
 		escreve_cubo(entrada);
-		printf("A: trocar de linha\nB: girar para a direita\nC: girar os 4 elementos centrais no sentido horario\nQ: Sair\n");
+		printf("Escolha uma opção:\nA: trocar de linha\nB: girar para a direita\nC: girar os 4 elementos centrais no sentido horario\nZ: Resolver automaticamente\nQ: Sair\n");
 	}
+	
+	printf("\nParabéns!\n");
 	return 0;
 }
 
@@ -133,18 +138,16 @@ void girahorario(int valores[], int n){
 }
 
 void resolve(int valores[]){
-	printf("Resolve o jogo!\n");
+	printf("Deveria resolver o jogo! :)\n");
 }
 
 void aleatorio(int valores[], int n){
-	printf("Cria entrada aleatória!\n");
 	int i, j, temp, tem = 0;
 	
 	srand( (unsigned)time(NULL) );
 	
 	for(i=0;i<n;i++){
-		temp = rand()%9;
-		printf("%d", temp);
+		temp = 1 + rand()%8;
 		for(j=i;!tem && j>=0;j--){
 			if(valores[j] == temp) tem = 1;
 		}
