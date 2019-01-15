@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int ve_igual(int vet[], int n);
 int pega_valores(int vet[], int argc, char *argv[]);
 void comparar(int vet[], int n);
 int procura(int vet_entrada[], int vet_temp[], int n, int tentativa);
 void gera_aleatorio(int vet[], int n);
-void calcula();
+void calcula(int quant);
 void ordena(int v[], int n);
 void escreve(int valores[], int n);
 
@@ -33,8 +34,19 @@ int main(int argc, char *argv[]){
 	return 0;
 }
 
+int ve_igual(int vet[], int n){
+	int i, j;
+	for(i=0; i<n;i++){
+		for(j=0;j<n;j++)
+			if(i != j && vet[i] == vet[j])
+				return 1;
+	}
+	
+	return 0;
+}
+
 int pega_valores(int vet[], int argc, char *argv[]){
-	int i;
+	int i, igual;
 	
 	//pega os argumentos da linha de comando
 	for(i=0;--argc > 0;i++){
@@ -51,6 +63,11 @@ int pega_valores(int vet[], int argc, char *argv[]){
 		else{
 			vet[i] = *++argv[i+1] - '0';
 		}
+	}
+	igual = ve_igual(vet, i);
+	if(igual){
+		printf("Você jogou números repetidos!\n");
+		return 0;
 	}
 	return 1;
 }
@@ -132,6 +149,7 @@ void calcula(int quant){
 	semanas = quant/2;
 	meses = semanas/4;
 	anos = meses/12;
+//	anos = semanas/52;
 	
 	meses = meses - anos*12;
 	semanas = semanas - (anos*12 + meses)*4;
